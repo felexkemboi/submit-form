@@ -5,7 +5,8 @@
 </template>
 
 <script>
-import Form from '@/components/Form.vue';
+// eslint-disable-next-line import/extensions
+import Form from '../components/Form';
 
 export default {
   name: 'Home',

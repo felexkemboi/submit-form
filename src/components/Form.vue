@@ -1,10 +1,14 @@
+/* eslint-disable no-trailing-spaces */
 <template>
   <div class="container">
-    <h1>Contact Form</h1>
     <form id="contact" action="" method="post" @submit.prevent="testing">
+      <h1 class="fieldset">Contact Form</h1>
       <fieldset>
         <input
           placeholder="Your name"
+          v-model="name"
+          :minlength="5"
+          :maxlength="50"
           type="text"
           tabindex="1"
           required
@@ -13,22 +17,27 @@
       </fieldset>
       <fieldset>
         <input
-          placeholder="Your Email Address"
+          placeholder="Your Email Address (must have @domain.com)"
           type="email"
+          v-model="email"
           tabindex="2"
           required
-          pattern='[a-z.]*[@]\bdomain.com'
+          pattern="[a-z.]*[@]\bdomain.com"
         />
       </fieldset>
       <fieldset>
         <input
           placeholder="Subject title (optional)"
+          :maxlength="100"
+          v-model="subject"
           type="text"
         />
       </fieldset>
       <fieldset>
         <textarea
           placeholder="Type your message here...."
+          v-model="message"
+          :maxlength="500"
           tabindex="5"
           required
         ></textarea>
@@ -40,7 +49,7 @@
           id="contact-submit"
           data-submit="...Sending"
         >
-          Submit
+          Send
         </button>
       </fieldset>
     </form>
@@ -48,21 +57,37 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   name: 'Form',
   data() {
     return {
       name: '',
       email: '',
-      password: '',
-      confirmPassword: '',
-      idNumber: null,
-      phoneNumber: null,
+      subject: '',
+      message: '',
     };
   },
   methods: {
-    addLink() {},
-    removeLink() {},
+    testing() {
+      const resource = {
+        name: this.name,
+        email: this.email,
+        subject: this.subject,
+        message: this.message,
+      };
+      axios
+        .post('https://5d9f7fe94d823c0014dd323d.mockapi.io/api', resource)
+        .then((res) => {
+          // eslint-disable-next-line no-console
+          console.log(res);
+        })
+        .catch((e) => {
+          // eslint-disable-next-line no-console
+          console.log(e);
+        });
+    },
   },
 };
 </script>
