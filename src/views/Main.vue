@@ -1,7 +1,7 @@
 /* eslint-disable no-trailing-spaces */
 <template>
   <div class="container">
-    <form id="contact" action="" method="post" @submit.prevent="testing">
+    <form id="contact" action="" method="post" @submit.prevent="submit">
       <h1 class="fieldset">Contact Form</h1>
       <fieldset>
         <input
@@ -53,14 +53,18 @@
         </button>
       </fieldset>
     </form>
+    <div  v-if="result">
+      <p>{{ status }}</p>
+    </div>
   </div>
+
 </template>
 
 <script>
 import axios from 'axios';
 
 export default {
-  name: 'Form',
+  name: 'Home',
   data() {
     return {
       name: '',
@@ -70,7 +74,7 @@ export default {
     };
   },
   methods: {
-    testing() {
+    submit() {
       const resource = {
         name: this.name,
         email: this.email,
@@ -78,14 +82,20 @@ export default {
         message: this.message,
       };
       axios
-        .post('https://5d9f7fe94d823c0014dd323d.mockapi.io/api', resource)
+        .post('https://5d9f7fe94d823c0014dd323d.mockapi.io/api/message', resource)
         .then((res) => {
+          this.status = `Response ${res.data}`;
+          // eslint-disable-next-line no-alert
+          alert(res);
+          setTimeout(() => {}, 2000);
           // eslint-disable-next-line no-console
           console.log(res);
         })
         .catch((e) => {
+          // eslint-disable-next-line no-alert
+          alert(e.response.data);
+          setTimeout(() => {}, 2000);
           // eslint-disable-next-line no-console
-          console.log(e);
         });
     },
   },
