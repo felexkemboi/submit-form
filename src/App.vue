@@ -25,7 +25,8 @@
             v-model="email"
             tabindex="2"
             required
-            pattern="[a-z.]*[@]\bdomain.com"
+            pattern='(\W|^)[\w.\-]{0,25}@(!yahoo|!hotmail|!gmail|domain)\.com(\W|$)'
+
           />
         </fieldset>
         <fieldset>
@@ -58,11 +59,7 @@
           </button>
         </fieldset>
       </form>
-      <div v-if="result">
-        <p>{{ status }}</p>
-      </div>
     </div>
-    <!-- <router-view/> -->
   </div>
 </template>
 <script>
@@ -114,6 +111,16 @@ export default {
       this.email = '';
       this.subject = '';
       this.message = '';
+    },
+
+    pattern() {
+      const blacklisted = ['gmail.com', 'org', 'net'];
+      const domain = this.email.split('@').slice(1);
+
+      if (domain.inArray(domain[0], blacklisted) !== -1) {
+        return true;
+      }
+      return false;
     },
   },
 };
